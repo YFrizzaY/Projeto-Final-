@@ -1,42 +1,3 @@
-var header           = document.getElementById('header');
-var navigationHeader = document.getElementById('navigation_header');
-var content          = document.getElementById('content');
-var showSidebar      = false;
-
-function toggleSidebar()
-{
-    showSidebar = !showSidebar;
-    if(showSidebar)
-    {
-        navigationHeader.style.marginLeft = '-10vw';
-        navigationHeader.style.animationName = 'showSidebar';
-        content.style.filter = 'blur(2px)';
-    }
-    else
-    {
-        navigationHeader.style.marginLeft = '-100vw';
-        navigationHeader.style.animationName = '';
-        content.style.filter = '';
-    }
-}
-
-function closeSidebar()
-{
-    if(showSidebar)
-    {
-        showSidebar = true;
-        toggleSidebar();
-    }
-}
-
-window.addEventListener('resize', function(event) {
-    if(window.innerWidth > 768 && showSidebar) 
-    {  
-        showSidebar = true;
-        toggleSidebar();
-    }
-});
-
 const imgs = document.getElementById("img");
 const img = document.querySelectorAll("#img img");
 
@@ -54,3 +15,45 @@ function carrosel() {
 
 setInterval(carrosel, 1800);
 
+class MobileNavbar{
+    constructor(mobileMenu, navList, navLinks){
+        this.mobileMenu = document.querySelector(mobileMenu);
+        this.navList = document.querySelector(navList);
+        this.navLinks = document.querySelectorAll(navLinks);
+        this.activeClass = "active";
+
+        this.hadleClick = this.hadleClick.bind(this);
+    }
+
+    animateLinks(){
+        this.navLinks.forEach((link, index) => {
+        link.style.animation
+            ? (link.style.animation = "")
+            : (link.style.animation = `navLinkFade 0.5s ease forwards $ {index / 7 + 0.3}s`);
+        });
+    }
+
+    hadleClick(){
+        this.navList.classList.toogle(this.activeClass);
+        this.mobileMenu.classList.toogle(this.activeClass);
+        this.animateLinks();
+    }
+
+    addClickEvent(){
+        this.mobileMenu.addEventListener("click", this.hadleClick);
+    }
+
+    init(){
+        if(this.mobileMenu){
+            this.addClickEvent();
+        }
+        return this;
+    }
+}
+
+const mobileMenu = new MobileNavbar(
+    ".mobile-menu",
+    ".nav-list",
+    ".nav-list li",
+);
+MobileNavbar.init();
